@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const upload = async (req, res) => {
 	try {
 		if (req.file == undefined) {
@@ -21,7 +23,7 @@ const upload = async (req, res) => {
 };
 
 const getListFiles = (req, res) => {
-	const directoryPath = __basedir + "/resources/static/assets/uploads/";
+	const directoryPath = process.env.STATIC_DIR + "/static";
 
 	fs.readdir(directoryPath, function (err, files) {
 		if (err) {
@@ -35,7 +37,7 @@ const getListFiles = (req, res) => {
 		files.forEach((file) => {
 			fileInfos.push({
 				name: file,
-				url: baseUrl + file,
+				url: process.env.API_URL + "/static/" + file,
 			});
 		});
 
@@ -45,7 +47,7 @@ const getListFiles = (req, res) => {
 
 const download = (req, res) => {
 	const fileName = req.params.name;
-	const directoryPath = __basedir + "/resources/static/assets/uploads/";
+	const directoryPath = process.env.STATIC_DIR + "/static";
 
 	res.download(directoryPath + fileName, fileName, (err) => {
 		if (err) {

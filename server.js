@@ -6,12 +6,13 @@ require("dotenv").config();
 const app = express();
 
 var corsOptions = {
-	origin: process.env.APP_URL,
+	origin: [process.env.APP_URL, process.env.TEST_APP_URL],
 };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(process.env.STATIC_DIR));
 
 // simple route
 app.get("/", (req, res) => {

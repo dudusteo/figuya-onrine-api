@@ -18,4 +18,6 @@ module.exports = (app) => {
 	);
 
 	app.post("/api/files", controller.getListFiles);
+
+	app.post("/api/files/:name", controller.download);
 };
