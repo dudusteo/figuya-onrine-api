@@ -1,38 +1,54 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const db = require("../../models");
 
-const db = [
-	{
-		email: "admin",
-		password: "admin",
-		firstName: "admin",
-		lastName: "admin",
-	},
-];
+const User = db.users;
 
 const login = (req, res) => {
 	const { email, password } = req.body;
 
-	db.forEach((element) => {
-		if (element.email === email && element.password === password)
-			console.log("logged in");
-	});
+	User.findOne({ where: { email: email, password: password } })
+		.then((user) => {
+			if (user === null) {
+				console.log("User: Not found!");
+			} else {
+				console.log("User: " + user);
+				let jwtSecretKey = process.env.JWT_SECRET_KEY;
 
-	let jwtSecretKey = process.env.JWT_SECRET_KEY;
+				const token = jwt.sign({ email }, jwtSecretKey, {
+					expiresIn: "7d",
+				});
 
-	const token = jwt.sign({ email }, jwtSecretKey, { expiresIn: "7d" });
-
-	res.send({ email, token });
+				res.send({ email, token });
+			}
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message,
+			});
+		});
 };
 
 const register = (req, res) => {
-	// Create User here
-
 	const { email, password, firstName, lastName } = req.body;
 
-	db.push({ email, password, firstName, lastName });
+	const user = {
+		email: email,
+		password: password,
+		first_name: firstName,
+		last_name: lastName,
+	};
 
-	console.log(db);
+	User.create(user)
+		.then((data) => {
+			console.log(data);
+			res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message,
+			});
+		});
 };
 
 const validateToken = (req, res) => {
