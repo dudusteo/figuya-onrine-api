@@ -25,6 +25,7 @@ db.sequelize = sequelize;
 
 db.users = require("./user.model")(sequelize, Sequelize);
 db.roles = require("./role.model")(sequelize, Sequelize);
+db.figurines = require("./figurine.model")(sequelize, Sequelize);
 
 db.roles.belongsToMany(db.users, {
 	through: "user_roles",

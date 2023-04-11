@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/figurine.routes")(app);
 
 const db = require("./app/models");
 
