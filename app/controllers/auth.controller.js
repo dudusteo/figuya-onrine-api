@@ -66,13 +66,9 @@ exports.signin = (req, res) => {
 				});
 			}
 
-			var token = jwt.sign(
-				{ id: user.user_id },
-				process.env.JWT_SECRET_KEY,
-				{
-					expiresIn: 86400, // 24 hours
-				}
-			);
+			var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
+				expiresIn: 86400, // 24 hours
+			});
 
 			var authorities = [];
 			user.getRoles().then((roles) => {
@@ -80,7 +76,7 @@ exports.signin = (req, res) => {
 					authorities.push("ROLE_" + roles[i].name.toUpperCase());
 				}
 				res.status(200).send({
-					id: user.user_id,
+					id: user.id,
 					email: user.email,
 					roles: authorities,
 					accessToken: token,
