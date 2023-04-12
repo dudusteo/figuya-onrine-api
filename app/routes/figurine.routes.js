@@ -12,12 +12,8 @@ module.exports = (app) => {
 	});
 
 	app.post(
-		"/api/photos",
+		"/api/figurine/add",
 		[authJwt.verifyToken, authJwt.isAdmin, uploadFileMiddleware],
-		controller.upload
+		controller.addFigurine
 	);
-
-	app.post("/api/files", controller.getListFiles);
-
-	app.post("/api/files/:name", controller.download);
 };

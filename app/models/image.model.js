@@ -1,13 +1,14 @@
 module.exports = (sequelize, Sequelize) => {
-	const Role = sequelize.define(
-		"role",
+	const Image = sequelize.define(
+		"image",
 		{
 			id: {
 				type: Sequelize.INTEGER,
 				primaryKey: true,
+				autoIncrement: true,
 				allowNull: false,
 			},
-			name: {
+			path: {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
@@ -17,5 +18,5 @@ module.exports = (sequelize, Sequelize) => {
 		}
 	);
 
-	return Role;
+	return Image;
 };

@@ -5,24 +5,32 @@ module.exports = (sequelize, Sequelize) => {
 			id: {
 				type: Sequelize.INTEGER,
 				primaryKey: true,
+				autoIncrement: true,
+				allowNull: false,
 			},
-			product_name: {
+			name: {
 				type: Sequelize.STRING,
+				allowNull: false,
 			},
 			origin: {
 				type: Sequelize.STRING,
+				allowNull: false,
 			},
 			company: {
 				type: Sequelize.STRING,
+				allowNull: false,
 			},
 			type: {
 				type: Sequelize.STRING,
+				allowNull: false,
 			},
 			condition: {
 				type: Sequelize.STRING,
+				allowNull: false,
 			},
 			price: {
 				type: Sequelize.INTEGER,
+				allowNull: false,
 			},
 		},
 		{

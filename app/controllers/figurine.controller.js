@@ -1,14 +1,42 @@
+const db = require("../models");
 const fs = require("fs");
+require("dotenv").config();
 
-const upload = async (req, res) => {
+const Figurine = db.figurines;
+const Image = db.images;
+
+const addFigurine = (req, res) => {
 	try {
-		if (req.file == undefined) {
-			return res.status(400).send({ message: "Please upload a file!" });
-		}
-
-		res.status(200).send({
-			message: "Uploaded the file successfully: " + req.file.originalname,
+		console.log({
+			body: req.body,
+			images: req.files,
 		});
+
+		Figurine.create({
+			name: req.body.name,
+			origin: req.body.origin,
+			company: req.body.company,
+			type: req.body.type,
+			condition: req.body.condition,
+			price: req.body.price,
+		})
+			.then((figurine) => {
+				if (figurine) {
+					req.files.forEach((element) => {
+						Image.create({
+							path:
+								process.env.API_URL +
+								"/static/" +
+								element.filename,
+						});
+					});
+				}
+			})
+			.catch((err) =>
+				res.status(500).send({
+					message: `Could not create figurine in database: ${err}`,
+				})
+			);
 	} catch (err) {
 		if (err.code == "LIMIT_FILE_SIZE") {
 			return res.status(500).send({
@@ -17,49 +45,11 @@ const upload = async (req, res) => {
 		}
 
 		res.status(500).send({
-			message: `Could not upload the file: ${req.file.originalname}. ${err}`,
+			message: `Could not upload the file: ${req.files}. ${err}`,
 		});
 	}
 };
 
-const getListFiles = (req, res) => {
-	const directoryPath = process.env.STATIC_DIR + "/static";
-
-	fs.readdir(directoryPath, function (err, files) {
-		if (err) {
-			res.status(500).send({
-				message: "Unable to scan files!",
-			});
-		}
-
-		let fileInfos = [];
-
-		files.forEach((file) => {
-			fileInfos.push({
-				name: file,
-				url: process.env.API_URL + "/static/" + file,
-			});
-		});
-
-		res.status(200).send(fileInfos);
-	});
-};
-
-const download = (req, res) => {
-	const fileName = req.params.name;
-	const directoryPath = process.env.STATIC_DIR + "/static";
-
-	res.download(directoryPath + fileName, fileName, (err) => {
-		if (err) {
-			res.status(500).send({
-				message: "Could not download the file. " + err,
-			});
-		}
-	});
-};
-
 module.exports = {
-	upload,
-	getListFiles,
-	download,
+	addFigurine,
 };
