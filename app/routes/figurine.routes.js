@@ -16,4 +16,6 @@ module.exports = (app) => {
 		[authJwt.verifyToken, authJwt.isAdmin, uploadFileMiddleware],
 		controller.addFigurine
 	);
+
+	app.get("/api/figurine/get", controller.getFigurines);
 };

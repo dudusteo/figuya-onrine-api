@@ -56,6 +56,28 @@ const addFigurine = (req, res) => {
 	}
 };
 
+const getFigurines = (req, res) => {
+	Figurine.findAll().then((figurines) => {
+		const figurineList = figurines.map((figurine) => {
+			return figurine.getImages().then((images) => {
+				return {
+					id: figurine.id,
+					name: figurine.name,
+					origin: figurine.origin,
+					company: figurine.company,
+					type: figurine.type,
+					condition: figurine.condition,
+					price: figurine.price,
+					images: images,
+				};
+			});
+		});
+		Promise.all(figurineList).then((result) => {
+			res.json(result);
+		});
+	});
+};
 module.exports = {
 	addFigurine,
+	getFigurines,
 };
