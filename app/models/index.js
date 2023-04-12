@@ -40,6 +40,18 @@ db.users.belongsToMany(db.roles, {
 	otherKey: "role_id",
 });
 
+db.figurines.belongsToMany(db.images, {
+	through: "figurine_images",
+	foreignKey: "figurine_id",
+	otherKey: "image_id",
+});
+
+db.images.belongsToMany(db.figurines, {
+	through: "figurine_images",
+	foreignKey: "image_id",
+	otherKey: "figurine_id",
+});
+
 db.ROLES = ["user", "admin"];
 
 module.exports = db;

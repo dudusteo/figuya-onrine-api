@@ -1,5 +1,4 @@
 const db = require("../models");
-const fs = require("fs");
 require("dotenv").config();
 
 const Figurine = db.figurines;
@@ -22,12 +21,19 @@ const addFigurine = (req, res) => {
 		})
 			.then((figurine) => {
 				if (figurine) {
-					req.files.forEach((element) => {
-						Image.create({
+					const promises = req.files.map((element) => {
+						return Image.create({
 							path:
 								process.env.API_URL +
 								"/static/" +
 								element.filename,
+						}).then((image) => {
+							return figurine.addImage(image);
+						});
+					});
+					Promise.all(promises).then(() => {
+						res.send({
+							message: `Figurine ${figurine.name} was created successfully!`,
 						});
 					});
 				}
