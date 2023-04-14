@@ -13,6 +13,7 @@ const addFigurine = (req, res) => {
 
 		Figurine.create({
 			name: req.body.name,
+			character: req.body.character,
 			origin: req.body.origin,
 			company: req.body.company,
 			type: req.body.type,
@@ -63,6 +64,7 @@ const getFigurines = (req, res) => {
 				return {
 					id: figurine.id,
 					name: figurine.name,
+					character: figurine.character,
 					origin: figurine.origin,
 					company: figurine.company,
 					type: figurine.type,

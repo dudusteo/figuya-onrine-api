@@ -12,6 +12,10 @@ module.exports = (sequelize, Sequelize) => {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
+			character: {
+				type: Sequelize.STRING,
+				allowNull: false,
+			},
 			origin: {
 				type: Sequelize.STRING,
 				allowNull: false,
