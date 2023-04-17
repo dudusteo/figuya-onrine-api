@@ -18,4 +18,17 @@ module.exports = (app) => {
 	);
 
 	app.get("/api/figurine/get", controller.getFigurines);
+
+	app.post(
+		"/api/figurine/option/character/add",
+		controller.addCharacterOption
+	);
+
+	app.post("/api/figurine/option/origin/add", controller.addOriginOption);
+
+	app.post("/api/figurine/option/company/add", controller.addCompanyOption);
+
+	app.post("/api/figurine/option/type/add", controller.addTypeOption);
+
+	app.get("/api/figurine/option/get", controller.getOptions);
 };
