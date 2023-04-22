@@ -7,6 +7,7 @@ const Character = db.characters;
 const Origin = db.origins;
 const Company = db.companies;
 const Type = db.types;
+const Package = db.packages;
 
 const addFigurine = (req, res) => {
 	try {
@@ -45,19 +46,23 @@ const addFigurine = (req, res) => {
 						if (figurine) {
 							const promises = req.files.map((element) => {
 								return Image.create({
-									path:
-										process.env.API_URL +
-										"/static/" +
-										element.filename,
-								}).then((image) => {
-									return figurine.addImage(image);
-								});
+									path: "/static/" + element.filename,
+								}).then((image) => figurine.addImage(image));
 							});
-							Promise.all(promises).then(() => {
-								res.send({
-									message: `Figurine ${figurine.name} was created successfully!`,
-								});
-							});
+
+							const packagePromise = Package.findOrCreate({
+								where: { name: req.body.packageName },
+							}).then(([package, created]) =>
+								figurine.addPackage(package)
+							);
+
+							Promise.all([...promises, packagePromise]).then(
+								() => {
+									res.send({
+										message: `Figurine ${figurine.name} was created successfully!`,
+									});
+								}
+							);
 						}
 					})
 					.catch((err) =>
@@ -92,10 +97,10 @@ const getFigurines = (req, res) => {
 					return {
 						id: figurine.id,
 						name: figurine.name,
-						character: figurine.character,
-						origin: figurine.origin,
-						company: figurine.company,
-						type: figurine.type,
+						character: figurine.character.name,
+						origin: figurine.origin.name,
+						company: figurine.company.name,
+						type: figurine.type.name,
 						condition: figurine.condition,
 						price: figurine.price,
 						images: images,
@@ -165,11 +170,40 @@ const addTypeOption = (req, res) => {
 		);
 };
 
+const addPackageOption = (req, res) => {
+	console.log(req.body);
+
+	Package.findOrCreate({
+		where: {
+			name: req.body.packageName,
+			item_cost: req.body.itemCost,
+			shipment_cost: req.body.shipmentCost,
+			additional_cost: req.body.additionalCost,
+		},
+	})
+		.then(([package, created]) => {
+			if (created) {
+				res.send({
+					message: `Package option ${package.name} was created successfully!`,
+				});
+			} else {
+				res.status(500).send({
+					message: `Package option ${package.name} already exists!`,
+				});
+			}
+		})
+		.catch((err) =>
+			res.status(500).send({
+				message: `Could not create package option in database: ${err}`,
+			})
+		);
+};
+
 const getOptions = (req, res) => {
-	const characterPromise = Character.findAll({ attributes: ["id", "name"] });
-	const originPromise = Origin.findAll({ attributes: ["id", "name"] });
-	const companyPromise = Company.findAll({ attributes: ["id", "name"] });
-	const typePromise = Type.findAll({ attributes: ["id", "name"] });
+	const characterPromise = Character.findAll();
+	const originPromise = Origin.findAll();
+	const companyPromise = Company.findAll();
+	const typePromise = Type.findAll();
 
 	return Promise.all([
 		characterPromise,
@@ -196,6 +230,18 @@ const getOptions = (req, res) => {
 		);
 };
 
+const getPackageOptions = (req, res) => {
+	Package.findAll()
+		.then((package) => {
+			res.json(package);
+		})
+		.catch((err) =>
+			res.status(500).send({
+				message: `Could not get package options in database: ${err}`,
+			})
+		);
+};
+
 module.exports = {
 	addFigurine,
 	getFigurines,
@@ -203,5 +249,7 @@ module.exports = {
 	addOriginOption,
 	addCompanyOption,
 	addTypeOption,
+	addPackageOption,
 	getOptions,
+	getPackageOptions,
 };

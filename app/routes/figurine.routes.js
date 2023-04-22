@@ -1,5 +1,6 @@
 const controller = require("../controllers/figurine.controller");
 const { authJwt } = require("../middleware");
+const formDataMiddleware = require("../middleware/formData");
 const uploadFileMiddleware = require("../middleware/upload");
 
 module.exports = (app) => {
@@ -23,12 +24,15 @@ module.exports = (app) => {
 		"/api/figurine/option/character/add",
 		controller.addCharacterOption
 	);
-
 	app.post("/api/figurine/option/origin/add", controller.addOriginOption);
-
 	app.post("/api/figurine/option/company/add", controller.addCompanyOption);
-
 	app.post("/api/figurine/option/type/add", controller.addTypeOption);
+	app.post(
+		"/api/figurine/option/package/add",
+		[authJwt.verifyToken, authJwt.isAdmin, formDataMiddleware],
+		controller.addPackageOption
+	);
 
 	app.get("/api/figurine/option/get", controller.getOptions);
+	app.get("/api/figurine/option/package/get", controller.getPackageOptions);
 };

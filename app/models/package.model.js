@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-	const Figurine = sequelize.define("figurine", {
+	const Package = sequelize.define("package", {
 		id: {
 			type: Sequelize.INTEGER,
 			primaryKey: true,
@@ -10,15 +10,19 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.STRING,
 			allowNull: false,
 		},
-		condition: {
-			type: Sequelize.STRING,
+		item_cost: {
+			type: Sequelize.DECIMAL(10, 2),
 			allowNull: false,
 		},
-		price: {
+		shipment_cost: {
+			type: Sequelize.DECIMAL(10, 2),
+			allowNull: false,
+		},
+		additional_cost: {
 			type: Sequelize.DECIMAL(10, 2),
 			allowNull: false,
 		},
 	});
 
-	return Figurine;
+	return Package;
 };

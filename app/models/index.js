@@ -31,6 +31,7 @@ db.origins = require("./origin.model")(sequelize, Sequelize);
 db.companies = require("./company.model")(sequelize, Sequelize);
 db.types = require("./type.model")(sequelize, Sequelize);
 db.images = require("./image.model")(sequelize, Sequelize);
+db.packages = require("./package.model")(sequelize, Sequelize);
 
 db.roles.belongsToMany(db.users, {
 	through: "user_roles",
@@ -53,6 +54,18 @@ db.figurines.belongsToMany(db.images, {
 db.images.belongsToMany(db.figurines, {
 	through: "figurine_images",
 	foreignKey: "image_id",
+	otherKey: "figurine_id",
+});
+
+db.figurines.belongsToMany(db.packages, {
+	through: "package_figurines",
+	foreignKey: "figurine_id",
+	otherKey: "package_id",
+});
+
+db.packages.belongsToMany(db.figurines, {
+	through: "package_figurines",
+	foreignKey: "package_id",
 	otherKey: "figurine_id",
 });
 
