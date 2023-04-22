@@ -90,28 +90,83 @@ const addFigurine = (req, res) => {
 };
 
 const getFigurines = (req, res) => {
-	Figurine.findAll({ include: [Character, Origin, Company, Type] }).then(
-		(figurines) => {
-			const figurineList = figurines.map((figurine) => {
-				return figurine.getImages().then((images) => {
-					return {
-						id: figurine.id,
-						name: figurine.name,
-						character: figurine.character.name,
-						origin: figurine.origin.name,
-						company: figurine.company.name,
-						type: figurine.type.name,
-						condition: figurine.condition,
-						price: figurine.price,
-						images: images,
-					};
-				});
+	Figurine.findAll({
+		include: [Character, Origin, Company, Type],
+	}).then((figurines) => {
+		const figurineList = figurines.map((figurine) => {
+			return figurine.getImages().then((images) => {
+				return {
+					id: figurine.id,
+					name: figurine.name,
+					character: figurine.character.name,
+					origin: figurine.origin.name,
+					company: figurine.company.name,
+					type: figurine.type.name,
+					condition: figurine.condition,
+					price: figurine.price,
+					images: images,
+				};
 			});
-			Promise.all(figurineList).then((result) => {
-				res.json(result);
-			});
-		}
-	);
+		});
+		Promise.all(figurineList).then((result) => {
+			res.json(result);
+		});
+	});
+};
+
+const getFigurinesByPackage = (req, res) => {
+	Package.findOne({
+		where: { name: req.query.packageName },
+	})
+		.then((package) => {
+			Figurine.findAll({
+				include: [
+					Character,
+					Origin,
+					Company,
+					Type,
+					{
+						model: Package,
+						where: {
+							id: package.id,
+						},
+						through: {
+							attributes: [],
+						},
+					},
+				],
+			})
+				.then((figurines) => {
+					const figurineList = figurines.map((figurine) => {
+						return figurine.getImages().then((images) => {
+							return {
+								id: figurine.id,
+								name: figurine.name,
+								character: figurine.character.name,
+								origin: figurine.origin.name,
+								company: figurine.company.name,
+								type: figurine.type.name,
+								condition: figurine.condition,
+								price: figurine.price,
+								images: images,
+							};
+						});
+					});
+					Promise.all(figurineList).then((result) => {
+						res.json(result);
+					});
+				})
+				.catch((err) =>
+					res.status(500).send({
+						message: `Could not find figurines for package ${req.query.packageName}: ${err}`,
+					})
+				);
+		})
+		.catch((err) =>
+			res.status(500).send({
+				message: `Could not find package ${req.query.packageName}: ${err}`,
+			})
+		);
 };
 
 const addCharacterOption = (req, res) => {
@@ -243,6 +298,7 @@ const getPackages = (req, res) => {
 module.exports = {
 	addFigurine,
 	getFigurines,
+	getFigurinesByPackage,
 	addCharacterOption,
 	addOriginOption,
 	addCompanyOption,
