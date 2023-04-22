@@ -170,9 +170,7 @@ const addTypeOption = (req, res) => {
 		);
 };
 
-const addPackageOption = (req, res) => {
-	console.log(req.body);
-
+const addPackage = (req, res) => {
 	Package.findOrCreate({
 		where: {
 			name: req.body.packageName,
@@ -230,7 +228,7 @@ const getOptions = (req, res) => {
 		);
 };
 
-const getPackageOptions = (req, res) => {
+const getPackages = (req, res) => {
 	Package.findAll()
 		.then((package) => {
 			res.json(package);
@@ -249,7 +247,7 @@ module.exports = {
 	addOriginOption,
 	addCompanyOption,
 	addTypeOption,
-	addPackageOption,
+	addPackage,
 	getOptions,
-	getPackageOptions,
+	getPackages,
 };
