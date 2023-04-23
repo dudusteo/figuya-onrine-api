@@ -9,7 +9,7 @@ const Company = db.companies;
 const Type = db.types;
 const Package = db.packages;
 
-const addFigurine = (req, res) => {
+const addFigurine = async (req, res) => {
 	try {
 		const characterPromise = Character.findOrCreate({
 			where: { name: req.body.character },
@@ -24,58 +24,55 @@ const addFigurine = (req, res) => {
 			where: { name: req.body.type },
 		}).then(([type, created]) => type);
 
-		return Promise.all([
+		const [character, origin, company, type] = await Promise.all([
 			characterPromise,
 			originPromise,
 			companyPromise,
 			typePromise,
-		])
-			.then((results) => {
-				const [character, origin, company, type] = results;
+		]);
 
-				Figurine.create({
-					name: req.body.name,
-					character_id: character.id,
-					origin_id: origin.id,
-					company_id: company.id,
-					type_id: type.id,
-					condition: req.body.condition,
-					price: req.body.price,
-				})
-					.then((figurine) => {
-						if (figurine) {
-							const promises = req.files.map((element) => {
-								return Image.create({
-									path: "/static/" + element.filename,
-								}).then((image) => figurine.addImage(image));
-							});
+		const [figurine, created] = await Figurine.findOrCreate({
+			where: { id: req.body.id },
+			defaults: {
+				name: req.body.name,
+				character_id: character.id,
+				origin_id: origin.id,
+				company_id: company.id,
+				type_id: type.id,
+				condition: req.body.condition,
+				price: req.body.price,
+			},
+		});
 
-							const packagePromise = Package.findOrCreate({
-								where: { name: req.body.packageName },
-							}).then(([package, created]) =>
-								figurine.addPackage(package)
-							);
+		if (!created) {
+			await figurine.update({
+				name: req.body.name,
+				character_id: character.id,
+				origin_id: origin.id,
+				company_id: company.id,
+				type_id: type.id,
+				condition: req.body.condition,
+				price: req.body.price,
+			});
+		}
 
-							Promise.all([...promises, packagePromise]).then(
-								() => {
-									res.send({
-										message: `Figurine ${figurine.name} was created successfully!`,
-									});
-								}
-							);
-						}
-					})
-					.catch((err) =>
-						res.status(500).send({
-							message: `Could not create figurine in database: ${err}`,
-						})
-					);
-			})
-			.catch((err) =>
-				res.status(500).send({
-					message: `Could not get figurine options in database: ${err}`,
-				})
-			);
+		const promises = req.files.map((element) => {
+			return Image.create({
+				path: "/static/" + element.filename,
+			}).then((image) => figurine.addImage(image));
+		});
+
+		const [package, createdPackage] = await Package.findOrCreate({
+			where: { name: req.body.packageName },
+		});
+
+		await figurine.addPackage(package);
+
+		await Promise.all(promises);
+
+		res.send({
+			message: `Figurine ${figurine.name} was created successfully!`,
+		});
 	} catch (err) {
 		if (err.code == "LIMIT_FILE_SIZE") {
 			return res.status(500).send({
@@ -84,7 +81,7 @@ const addFigurine = (req, res) => {
 		}
 
 		res.status(500).send({
-			message: `Could not upload the file: ${req.files}. ${err}`,
+			message: `Could not create or update figurine in database: ${err}`,
 		});
 	}
 };
@@ -228,6 +225,9 @@ const addTypeOption = (req, res) => {
 const addPackage = (req, res) => {
 	Package.findOrCreate({
 		where: {
+			id: req.body.id,
+		},
+		defaults: {
 			name: req.body.packageName,
 			item_cost: req.body.itemCost,
 			shipment_cost: req.body.shipmentCost,
@@ -235,13 +235,26 @@ const addPackage = (req, res) => {
 		},
 	})
 		.then(([package, created]) => {
-			if (created) {
+			if (!created) {
+				package
+					.update({
+						item_cost: req.body.itemCost,
+						shipment_cost: req.body.shipmentCost,
+						additional_cost: req.body.additionalCost,
+					})
+					.then(() => {
+						res.send({
+							message: `Package option ${package.name} was updated successfully!`,
+						});
+					})
+					.catch((err) => {
+						res.status(500).send({
+							message: `Could not update package option in database: ${err}`,
+						});
+					});
+			} else {
 				res.send({
 					message: `Package option ${package.name} was created successfully!`,
-				});
-			} else {
-				res.status(500).send({
-					message: `Package option ${package.name} already exists!`,
 				});
 			}
 		})
