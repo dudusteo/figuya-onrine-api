@@ -295,9 +295,24 @@ const getPackages = (req, res) => {
 		);
 };
 
+const removeFigurine = async (req, res) => {
+	const { id } = req.query;
+
+	Figurine.destroy({ where: { id } }).then((number) =>
+		number == 1
+			? res.send({
+					message: "Figurine was deleted successfully!",
+			  })
+			: res.status(500).send({
+					message: `Cannot delete Figurine with id=${id}. Maybe Figurine was not found!`,
+			  })
+	);
+};
+
 module.exports = {
 	addFigurine,
 	getFigurines,
+	removeFigurine,
 	getFigurinesByPackage,
 	addCharacterOption,
 	addOriginOption,

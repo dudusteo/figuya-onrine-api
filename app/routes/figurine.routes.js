@@ -31,6 +31,12 @@ module.exports = (app) => {
 
 	app.get("/api/figurine/option/get", controller.getOptions);
 
+	app.delete(
+		"/api/figurine/remove",
+		[authJwt.verifyToken, authJwt.isAdmin],
+		controller.removeFigurine
+	);
+
 	app.get("/api/figurine/option/package/get", controller.getPackages);
 	app.post(
 		"/api/figurine/option/package/add",
