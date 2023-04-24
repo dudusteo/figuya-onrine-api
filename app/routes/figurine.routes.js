@@ -18,7 +18,10 @@ module.exports = (app) => {
 		controller.addFigurine
 	);
 
-	app.get("/api/figurine/get", controller.getFigurines);
+	app.get("/api/figurine/all", controller.getAllFigurines);
+
+	app.get("/api/figurine/get", controller.getFigurine);
+
 	app.get("/api/figurine/get/package", controller.getFigurinesByPackage);
 
 	app.post(

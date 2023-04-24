@@ -86,7 +86,7 @@ const addFigurine = async (req, res) => {
 	}
 };
 
-const getFigurines = (req, res) => {
+const getAllFigurines = (req, res) => {
 	Figurine.findAll({
 		include: [Character, Origin, Company, Type],
 	}).then((figurines) => {
@@ -108,6 +108,34 @@ const getFigurines = (req, res) => {
 		Promise.all(figurineList).then((result) => {
 			res.json(result);
 		});
+	});
+};
+
+const getFigurine = (req, res) => {
+	const { id } = req.query;
+	Figurine.findOne({
+		where: { id: id },
+		include: [Character, Origin, Company, Type],
+	}).then((figurine) => {
+		if (figurine) {
+			figurine.getImages().then((images) => {
+				res.json({
+					id: figurine.id,
+					name: figurine.name,
+					character: figurine.character.name,
+					origin: figurine.origin.name,
+					company: figurine.company.name,
+					type: figurine.type.name,
+					condition: figurine.condition,
+					price: figurine.price,
+					images: images,
+				});
+			});
+		} else {
+			res.status(404).send({
+				message: `Figurine with the id: ${id} not found`,
+			});
+		}
 	});
 };
 
@@ -324,7 +352,8 @@ const removeFigurine = async (req, res) => {
 
 module.exports = {
 	addFigurine,
-	getFigurines,
+	getAllFigurines,
+	getFigurine,
 	removeFigurine,
 	getFigurinesByPackage,
 	addCharacterOption,
