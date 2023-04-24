@@ -10,15 +10,15 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.STRING,
 			allowNull: false,
 		},
-		item_cost: {
+		itemCost: {
 			type: Sequelize.DECIMAL(10, 2),
 			allowNull: false,
 		},
-		shipment_cost: {
+		shipmentCost: {
 			type: Sequelize.DECIMAL(10, 2),
 			allowNull: false,
 		},
-		additional_cost: {
+		additionalCost: {
 			type: Sequelize.DECIMAL(10, 2),
 			allowNull: false,
 		},

@@ -34,55 +34,55 @@ db.images = require("./image.model")(sequelize, Sequelize);
 db.packages = require("./package.model")(sequelize, Sequelize);
 
 db.roles.belongsToMany(db.users, {
-	through: "user_roles",
-	foreignKey: "role_id",
-	otherKey: "user_id",
+	through: "userRoles",
+	foreignKey: "roleId",
+	otherKey: "userId",
 });
 
 db.users.belongsToMany(db.roles, {
-	through: "user_roles",
-	foreignKey: "user_id",
-	otherKey: "role_id",
+	through: "userRoles",
+	foreignKey: "userId",
+	otherKey: "roleId",
 });
 
 db.figurines.belongsToMany(db.images, {
-	through: "figurine_images",
-	foreignKey: "figurine_id",
-	otherKey: "image_id",
+	through: "figurineImages",
+	foreignKey: "figurineId",
+	otherKey: "imageId",
 });
 
 db.images.belongsToMany(db.figurines, {
-	through: "figurine_images",
-	foreignKey: "image_id",
-	otherKey: "figurine_id",
+	through: "figurineImages",
+	foreignKey: "imageId",
+	otherKey: "figurineId",
 });
 
 db.figurines.belongsToMany(db.packages, {
-	through: "package_figurines",
-	foreignKey: "figurine_id",
-	otherKey: "package_id",
+	through: "packageFigurines",
+	foreignKey: "figurineId",
+	otherKey: "packageId",
 });
 
 db.packages.belongsToMany(db.figurines, {
-	through: "package_figurines",
-	foreignKey: "package_id",
-	otherKey: "figurine_id",
+	through: "packageFigurines",
+	foreignKey: "packageId",
+	otherKey: "figurineId",
 });
 
 db.figurines.belongsTo(db.characters, {
-	foreignKey: "character_id",
+	foreignKey: "characterId",
 });
 
 db.figurines.belongsTo(db.origins, {
-	foreignKey: "origin_id",
+	foreignKey: "originId",
 });
 
 db.figurines.belongsTo(db.companies, {
-	foreignKey: "company_id",
+	foreignKey: "companyId",
 });
 
 db.figurines.belongsTo(db.types, {
-	foreignKey: "type_id",
+	foreignKey: "typeId",
 });
 
 db.ROLES = ["user", "admin"];

@@ -13,8 +13,8 @@ exports.signup = (req, res) => {
 	User.create({
 		email: req.body.email,
 		password: bcrypt.hashSync(req.body.password, 8),
-		first_name: req.body.firstName,
-		last_name: req.body.lastName,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
 	})
 		.then((user) => {
 			if (req.body.roles) {

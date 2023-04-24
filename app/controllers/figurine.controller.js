@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 require("dotenv").config();
 
@@ -9,6 +10,7 @@ const Company = db.companies;
 const Type = db.types;
 const Package = db.packages;
 
+//Add or update figurine
 const addFigurine = async (req, res) => {
 	try {
 		const characterPromise = Character.findOrCreate({
@@ -35,10 +37,10 @@ const addFigurine = async (req, res) => {
 			where: { id: req.body.id },
 			defaults: {
 				name: req.body.name,
-				character_id: character.id,
-				origin_id: origin.id,
-				company_id: company.id,
-				type_id: type.id,
+				characterId: character.id,
+				originId: origin.id,
+				companyId: company.id,
+				typeId: type.id,
 				condition: req.body.condition,
 				price: req.body.price,
 			},
@@ -47,10 +49,10 @@ const addFigurine = async (req, res) => {
 		if (!created) {
 			await figurine.update({
 				name: req.body.name,
-				character_id: character.id,
-				origin_id: origin.id,
-				company_id: company.id,
-				type_id: type.id,
+				characterId: character.id,
+				originId: origin.id,
+				companyId: company.id,
+				typeId: type.id,
 				condition: req.body.condition,
 				price: req.body.price,
 			});
@@ -63,7 +65,7 @@ const addFigurine = async (req, res) => {
 		});
 
 		const [package, createdPackage] = await Package.findOrCreate({
-			where: { name: req.body.packageName },
+			where: { id: req.body.packageId },
 		});
 
 		await figurine.addPackage(package);
@@ -86,8 +88,10 @@ const addFigurine = async (req, res) => {
 	}
 };
 
+//Show all non sold figurines
 const getAllFigurines = (req, res) => {
 	Figurine.findAll({
+		where: { soldAt: { [Op.is]: null } },
 		include: [Character, Origin, Company, Type],
 	}).then((figurines) => {
 		const figurineList = figurines.map((figurine) => {
@@ -111,10 +115,11 @@ const getAllFigurines = (req, res) => {
 	});
 };
 
+//Show one non sold figurines
 const getFigurine = (req, res) => {
 	const { id } = req.query;
 	Figurine.findOne({
-		where: { id: id },
+		where: { id: id, soldAt: { [Op.is]: null } },
 		include: [Character, Origin, Company, Type],
 	}).then((figurine) => {
 		if (figurine) {
@@ -139,9 +144,10 @@ const getFigurine = (req, res) => {
 	});
 };
 
+//Get all figurines using packageId
 const getFigurinesByPackage = (req, res) => {
 	Package.findOne({
-		where: { name: req.query.packageName },
+		where: { id: req.query.packageId },
 	})
 		.then((package) => {
 			Figurine.findAll({
@@ -173,6 +179,7 @@ const getFigurinesByPackage = (req, res) => {
 								type: figurine.type.name,
 								condition: figurine.condition,
 								price: figurine.price,
+								soldAt: figurine.soldAt,
 								images: images,
 							};
 						});
@@ -183,7 +190,7 @@ const getFigurinesByPackage = (req, res) => {
 				})
 				.catch((err) =>
 					res.status(500).send({
-						message: `Could not find figurines for package ${req.query.packageName}: ${err}`,
+						message: `Could not find figurines for package ${req.query.packageId}: ${err}`,
 					})
 				);
 		})
@@ -194,6 +201,7 @@ const getFigurinesByPackage = (req, res) => {
 		);
 };
 
+//deprecated
 const addCharacterOption = (req, res) => {
 	Character.create({ name: req.body.name })
 		.then((character) => {
@@ -208,6 +216,7 @@ const addCharacterOption = (req, res) => {
 		);
 };
 
+//deprecated
 const addOriginOption = (req, res) => {
 	Origin.create({ name: req.body.name })
 		.then((origin) => {
@@ -222,6 +231,7 @@ const addOriginOption = (req, res) => {
 		);
 };
 
+//deprecated
 const addCompanyOption = (req, res) => {
 	Company.create({ name: req.body.name })
 		.then((company) => {
@@ -236,6 +246,7 @@ const addCompanyOption = (req, res) => {
 		);
 };
 
+//deprecated
 const addTypeOption = (req, res) => {
 	Type.create({ name: req.body.name })
 		.then((type) => {
@@ -250,25 +261,27 @@ const addTypeOption = (req, res) => {
 		);
 };
 
+// Add or update new package
 const addPackage = (req, res) => {
 	Package.findOrCreate({
 		where: {
 			id: req.body.id,
 		},
 		defaults: {
-			name: req.body.packageName,
-			item_cost: req.body.itemCost,
-			shipment_cost: req.body.shipmentCost,
-			additional_cost: req.body.additionalCost,
+			name: req.body.name,
+			itemCost: req.body.itemCost,
+			shipmentCost: req.body.shipmentCost,
+			additionalCost: req.body.additionalCost,
 		},
 	})
 		.then(([package, created]) => {
 			if (!created) {
 				package
 					.update({
-						item_cost: req.body.itemCost,
-						shipment_cost: req.body.shipmentCost,
-						additional_cost: req.body.additionalCost,
+						name: req.body.name,
+						itemCost: req.body.itemCost,
+						shipmentCost: req.body.shipmentCost,
+						additionalCost: req.body.additionalCost,
 					})
 					.then(() => {
 						res.send({
@@ -293,6 +306,7 @@ const addPackage = (req, res) => {
 		);
 };
 
+// Get all options for bar
 const getOptions = (req, res) => {
 	const characterPromise = Character.findAll();
 	const originPromise = Origin.findAll();
@@ -324,6 +338,7 @@ const getOptions = (req, res) => {
 		);
 };
 
+// Get all packages
 const getPackages = (req, res) => {
 	Package.findAll()
 		.then((package) => {
@@ -336,6 +351,7 @@ const getPackages = (req, res) => {
 		);
 };
 
+// For admin testing, probably will be modified to soldAt = date()
 const removeFigurine = async (req, res) => {
 	const { id } = req.query;
 
@@ -356,10 +372,10 @@ module.exports = {
 	getFigurine,
 	removeFigurine,
 	getFigurinesByPackage,
-	addCharacterOption,
-	addOriginOption,
-	addCompanyOption,
-	addTypeOption,
+	// addCharacterOption,
+	// addOriginOption,
+	// addCompanyOption,
+	// addTypeOption,
 	addPackage,
 	getOptions,
 	getPackages,

@@ -12,27 +12,17 @@ module.exports = (app) => {
 		next();
 	});
 
+	//Figurine
+
 	app.post(
 		"/api/figurine/add",
 		[authJwt.verifyToken, authJwt.isAdmin, uploadFileMiddleware],
 		controller.addFigurine
 	);
 
-	app.get("/api/figurine/all", controller.getAllFigurines);
-
 	app.get("/api/figurine/get", controller.getFigurine);
 
-	app.get("/api/figurine/get/package", controller.getFigurinesByPackage);
-
-	app.post(
-		"/api/figurine/option/character/add",
-		controller.addCharacterOption
-	);
-	app.post("/api/figurine/option/origin/add", controller.addOriginOption);
-	app.post("/api/figurine/option/company/add", controller.addCompanyOption);
-	app.post("/api/figurine/option/type/add", controller.addTypeOption);
-
-	app.get("/api/figurine/option/get", controller.getOptions);
+	app.get("/api/figurine/all", controller.getAllFigurines);
 
 	app.delete(
 		"/api/figurine/remove",
@@ -40,10 +30,19 @@ module.exports = (app) => {
 		controller.removeFigurine
 	);
 
-	app.get("/api/figurine/option/package/get", controller.getPackages);
+	// mixed
+
+	app.get("/api/figurine/all/package/get", controller.getFigurinesByPackage);
+
+	app.get("/api/figurine/option/get", controller.getOptions);
+
+	// Package
+
 	app.post(
-		"/api/figurine/option/package/add",
+		"/api/package/add",
 		[authJwt.verifyToken, authJwt.isAdmin, formDataMiddleware],
 		controller.addPackage
 	);
+
+	app.get("/api/package/all", controller.getPackages);
 };
