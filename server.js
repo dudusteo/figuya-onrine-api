@@ -30,6 +30,7 @@ db.sequelize
 	.sync()
 	.then(() => {
 		console.log("Synced db.");
+		// initial();
 	})
 	.catch((err) => {
 		console.log("Failed to sync db: " + err.message);
@@ -39,3 +40,16 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
 	console.log(`Server is up and running on ${port} ...`);
 });
+
+// function initial() {
+// 	Role = db.roles;
+// 	Role.create({
+// 		id: 1,
+// 		name: "user",
+// 	});
+
+// 	Role.create({
+// 		id: 2,
+// 		name: "admin",
+// 	});
+// }
