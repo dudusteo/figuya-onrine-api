@@ -104,7 +104,7 @@ const getAllFigurines = (req, res) => {
 					company: figurine.company.name,
 					type: figurine.type.name,
 					condition: figurine.condition,
-					price: figurine.price,
+					price: parseFloat(figurine.price),
 					images: images,
 				};
 			});
@@ -132,7 +132,7 @@ const getFigurine = (req, res) => {
 					company: figurine.company.name,
 					type: figurine.type.name,
 					condition: figurine.condition,
-					price: figurine.price,
+					price: parseFloat(figurine.price),
 					images: images,
 				});
 			});
@@ -178,7 +178,7 @@ const getFigurinesByPackage = (req, res) => {
 								company: figurine.company.name,
 								type: figurine.type.name,
 								condition: figurine.condition,
-								price: figurine.price,
+								price: parseFloat(figurine.price),
 								soldAt: figurine.soldAt,
 								images: images,
 							};
