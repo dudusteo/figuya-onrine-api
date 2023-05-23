@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(env.static));
 
 // Simple route
-app.get("/", (req: Request, res: Response) => {
+app.get("/api", (req: Request, res: Response) => {
 	res.json({ message: "Welcome to Figuya Onrine API." });
 });
 
