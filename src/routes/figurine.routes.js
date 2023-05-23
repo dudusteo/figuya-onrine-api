@@ -1,7 +1,7 @@
 const controller = require("../controllers/figurine.controller");
-const { authJwt } = require("../middleware");
-const formDataMiddleware = require("../middleware/formData");
-const uploadFileMiddleware = require("../middleware/upload");
+const { authJwt } = require("../middlewares");
+const formDataMiddleware = require("../middlewares/formData");
+const uploadFileMiddleware = require("../middlewares/upload");
 
 module.exports = (app) => {
 	app.use((req, res, next) => {
@@ -32,17 +32,17 @@ module.exports = (app) => {
 
 	// mixed
 
-	app.get("/api/figurine/all/package/get", controller.getFigurinesByPackage);
+	app.get("/api/figurine/all/shipment/get", controller.getFigurinesByPackage);
 
 	app.get("/api/figurine/option/get", controller.getOptions);
 
-	// Package
+	// shipment
 
 	app.post(
-		"/api/package/add",
+		"/api/shipment/add",
 		[authJwt.verifyToken, authJwt.isAdmin, formDataMiddleware],
 		controller.addPackage
 	);
 
-	app.get("/api/package/all", controller.getPackages);
+	app.get("/api/shipment/all", controller.getPackages);
 };

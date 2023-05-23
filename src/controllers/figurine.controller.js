@@ -1,6 +1,5 @@
 const { Op } = require("sequelize");
 const db = require("../models");
-require("dotenv").config();
 
 const Figurine = db.figurines;
 const Image = db.images;
@@ -8,7 +7,7 @@ const Character = db.characters;
 const Origin = db.origins;
 const Company = db.companies;
 const Type = db.types;
-const Package = db.packages;
+const Shipment = db.packages;
 
 //Add or update figurine
 const addFigurine = async (req, res) => {
@@ -64,11 +63,11 @@ const addFigurine = async (req, res) => {
 			}).then((image) => figurine.addImage(image));
 		});
 
-		const [package, createdPackage] = await Package.findOrCreate({
+		const [myPackage, createdPackage] = await Shipment.findOrCreate({
 			where: { id: req.body.packageId },
 		});
 
-		await figurine.addPackage(package);
+		await figurine.addPackage(myPackage);
 
 		await Promise.all(promises);
 
@@ -146,10 +145,10 @@ const getFigurine = (req, res) => {
 
 //Get all figurines using packageId
 const getFigurinesByPackage = (req, res) => {
-	Package.findOne({
+	Shipment.findOne({
 		where: { id: req.query.packageId },
 	})
-		.then((package) => {
+		.then((shipment) => {
 			Figurine.findAll({
 				include: [
 					Character,
@@ -157,9 +156,9 @@ const getFigurinesByPackage = (req, res) => {
 					Company,
 					Type,
 					{
-						model: Package,
+						model: shipment,
 						where: {
-							id: package.id,
+							id: shipment.id,
 						},
 						through: {
 							attributes: [],
@@ -190,13 +189,13 @@ const getFigurinesByPackage = (req, res) => {
 				})
 				.catch((err) =>
 					res.status(500).send({
-						message: `Could not find figurines for package ${req.query.packageId}: ${err}`,
+						message: `Could not find figurines for shipment ${req.query.packageId}: ${err}`,
 					})
 				);
 		})
 		.catch((err) =>
 			res.status(500).send({
-				message: `Could not find package ${req.query.packageName}: ${err}`,
+				message: `Could not find shipment ${req.query.packageName}: ${err}`,
 			})
 		);
 };
@@ -261,9 +260,9 @@ const addTypeOption = (req, res) => {
 		);
 };
 
-// Add or update new package
+// Add or update new shipment
 const addPackage = (req, res) => {
-	Package.findOrCreate({
+	Shipment.findOrCreate({
 		where: {
 			id: req.body.id,
 		},
@@ -274,9 +273,9 @@ const addPackage = (req, res) => {
 			additionalCost: req.body.additionalCost,
 		},
 	})
-		.then(([package, created]) => {
+		.then(([shipment, created]) => {
 			if (!created) {
-				package
+				shipment
 					.update({
 						name: req.body.name,
 						itemCost: req.body.itemCost,
@@ -285,23 +284,23 @@ const addPackage = (req, res) => {
 					})
 					.then(() => {
 						res.send({
-							message: `Package option ${package.name} was updated successfully!`,
+							message: `shipment option ${shipment.name} was updated successfully!`,
 						});
 					})
 					.catch((err) => {
 						res.status(500).send({
-							message: `Could not update package option in database: ${err}`,
+							message: `Could not update shipment option in database: ${err}`,
 						});
 					});
 			} else {
 				res.send({
-					message: `Package option ${package.name} was created successfully!`,
+					message: `shipment option ${shipment.name} was created successfully!`,
 				});
 			}
 		})
 		.catch((err) =>
 			res.status(500).send({
-				message: `Could not create package option in database: ${err}`,
+				message: `Could not create shipment option in database: ${err}`,
 			})
 		);
 };
@@ -340,13 +339,13 @@ const getOptions = (req, res) => {
 
 // Get all packages
 const getPackages = (req, res) => {
-	Package.findAll()
-		.then((package) => {
-			res.json(package);
+	Shipment.findAll()
+		.then((shipment) => {
+			res.json(shipment);
 		})
 		.catch((err) =>
 			res.status(500).send({
-				message: `Could not get package options in database: ${err}`,
+				message: `Could not get shipment options in database: ${err}`,
 			})
 		);
 };
