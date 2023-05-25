@@ -1,34 +1,23 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { registerUser, loginUser } from "../../src/controllers/authController";
 import User from "../../src/models/user";
 import env from "../../src/config/env";
-import { registerUser, loginUser } from "../../src/controllers/authController";
+import { Op } from "sequelize";
 
-jest.mock("../../src/models/user", () => ({
-	findOne: jest.fn(),
-	create: jest.fn(),
-}));
+jest.mock("../../src/models/user"); // Mocking the User model
 
-jest.mock("bcryptjs", () => ({
-	hash: jest.fn(),
-	compare: jest.fn(),
-}));
-
-jest.mock("jsonwebtoken", () => ({
-	sign: jest.fn(),
-}));
-
-describe("authController", () => {
-	let req: Request;
-	let res: Response;
+describe("Auth Controller", () => {
+	let req: Partial<Request>;
+	let res: Partial<Response>;
 
 	beforeEach(() => {
-		req = {} as Request;
+		req = {};
 		res = {
 			json: jest.fn(),
 			status: jest.fn().mockReturnThis(),
-		} as unknown as Response;
+		};
 	});
 
 	afterEach(() => {
@@ -36,65 +25,126 @@ describe("authController", () => {
 	});
 
 	describe("registerUser", () => {
-		it("should register a new user and return a JWT token", async () => {
-			const username = "testuser";
-			const password = "testpassword";
-			const hashedPassword = "hashedpassword";
-			const token = "generatedtoken";
+		it("should register a new user", async () => {
+			const mockRequest = {
+				body: {
+					username: "testuser",
+					email: "testuser@example.com",
+					firstName: "Test",
+					lastName: "User",
+					password: "testpassword",
+				},
+			} as Request;
 
-			req.body = { username, password };
+			const mockUser = {
+				id: "123",
+				...mockRequest.body,
+			};
 
-			(User.findOne as jest.Mock).mockResolvedValue(null);
-			(bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword);
-			(User.create as jest.Mock).mockResolvedValue({ id: 1 });
-			(jwt.sign as jest.Mock).mockReturnValue(token);
+			const mockToken = "mocktoken";
 
-			await registerUser(req, res);
+			(User.findOne as jest.Mock) = jest.fn().mockResolvedValue(null);
+			(bcrypt.hash as jest.Mock) = jest
+				.fn()
+				.mockResolvedValue("hashedpassword");
+			(User.create as jest.Mock) = jest.fn().mockResolvedValue(mockUser);
+			(jwt.sign as jest.Mock) = jest.fn().mockReturnValue(mockToken);
 
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
-			expect(User.create).toHaveBeenCalledWith({
-				username,
-				password: hashedPassword,
+			await registerUser(mockRequest, res as Response);
+
+			expect(User.findOne).toHaveBeenCalledTimes(1);
+			expect(User.findOne).toHaveBeenCalledWith({
+				where: {
+					[Op.or]: [
+						{ username: mockRequest.body.username },
+						{ email: mockRequest.body.email },
+					],
+				},
 			});
+
+			expect(bcrypt.hash).toHaveBeenCalledTimes(1);
+			expect(bcrypt.hash).toHaveBeenCalledWith(
+				mockRequest.body.password,
+				10
+			);
+
+			expect(User.create).toHaveBeenCalledTimes(1);
+			expect(User.create).toHaveBeenCalledWith({
+				username: mockRequest.body.username,
+				email: mockRequest.body.email,
+				firstName: mockRequest.body.firstName,
+				lastName: mockRequest.body.lastName,
+				password: "hashedpassword",
+			});
+
+			expect(jwt.sign).toHaveBeenCalledTimes(1);
 			expect(jwt.sign).toHaveBeenCalledWith(
-				{ userId: 1 },
+				{ userId: mockUser.id },
 				env.jwtSecret,
 				{ expiresIn: "1h" }
 			);
-			expect(res.json).toHaveBeenCalledWith({ token });
+
+			expect(res.status).toHaveBeenCalledTimes(1);
+			expect(res.status).toHaveBeenCalledWith(200);
+			expect(res.json).toHaveBeenCalledTimes(1);
+			expect(res.json).toHaveBeenCalledWith({ token: mockToken });
 		});
 
-		it("should return an error if the username already exists", async () => {
-			const username = "testuser";
-			const password = "testpassword";
+		it("should return an error if username or email already exists", async () => {
+			const mockRequest = {
+				body: {
+					username: "testuser",
+					email: "testuser@example.com",
+					firstName: "Test",
+					lastName: "User",
+					password: "testpassword",
+				},
+			} as Request;
 
-			req.body = { username, password };
+			(User.findOne as jest.Mock) = jest.fn().mockResolvedValue(true);
 
-			(User.findOne as jest.Mock).mockResolvedValue({ id: 1 });
+			await registerUser(mockRequest, res as Response);
 
-			await registerUser(req, res);
+			expect(User.findOne).toHaveBeenCalledTimes(1);
+			expect(User.findOne).toHaveBeenCalledWith({
+				where: {
+					[Op.or]: [
+						{ username: mockRequest.body.username },
+						{ email: mockRequest.body.email },
+					],
+				},
+			});
 
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
+			expect(res.status).toHaveBeenCalledTimes(1);
 			expect(res.status).toHaveBeenCalledWith(400);
+			expect(res.json).toHaveBeenCalledTimes(1);
 			expect(res.json).toHaveBeenCalledWith({
-				error: "Username already exists",
+				error: "Username or Email already exists",
 			});
 		});
 
-		it("should return an error if an exception occurs", async () => {
-			const username = "testuser";
-			const password = "testpassword";
+		it("should handle internal server errors", async () => {
+			const mockRequest = {
+				body: {
+					username: "testuser",
+					email: "testuser@example.com",
+					firstName: "Test",
+					lastName: "User",
+					password: "testpassword",
+				},
+			} as Request;
 
-			req.body = { username, password };
+			(User.findOne as jest.Mock) = jest
+				.fn()
+				.mockRejectedValue(new Error("Database error"));
 
-			(User.findOne as jest.Mock).mockRejectedValue(
-				new Error("Database error")
-			);
+			await registerUser(mockRequest, res as Response);
 
-			await registerUser(req, res);
+			expect(User.findOne).toHaveBeenCalledTimes(1);
 
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
+			expect(res.status).toHaveBeenCalledTimes(1);
 			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledTimes(1);
 			expect(res.json).toHaveBeenCalledWith({
 				error: "Internal Server Error",
 			});
@@ -102,93 +152,109 @@ describe("authController", () => {
 	});
 
 	describe("loginUser", () => {
-		it("should log in a user and return a JWT token", async () => {
-			const username = "testuser";
-			const password = "testpassword";
-			const hashedPassword = "hashedpassword";
-			const token = "generatedtoken";
+		it("should log in a user", async () => {
+			const mockRequest = {
+				body: {
+					login: "testuser",
+					password: "testpassword",
+				},
+			} as Request;
 
-			req.body = { username, password };
+			const mockUser = {
+				id: "123",
+				username: "testuser",
+				email: "testuser@example.com",
+				firstName: "Test",
+				lastName: "User",
+				password: "hashedpassword",
+			};
 
-			(User.findOne as jest.Mock).mockResolvedValue({
-				id: 1,
-				password: hashedPassword,
+			const mockToken = "mocktoken";
+
+			(User.findOne as jest.Mock) = jest.fn().mockResolvedValue(mockUser);
+			(bcrypt.compare as jest.Mock) = jest.fn().mockResolvedValue(true);
+			(jwt.sign as jest.Mock) = jest.fn().mockReturnValue(mockToken);
+
+			await loginUser(mockRequest, res as Response);
+
+			expect(User.findOne).toHaveBeenCalledTimes(1);
+			expect(User.findOne).toHaveBeenCalledWith({
+				where: {
+					[Op.or]: [
+						{ username: mockRequest.body.login },
+						{ email: mockRequest.body.login },
+					],
+				},
 			});
-			(bcrypt.compare as jest.Mock).mockResolvedValue(true);
-			(jwt.sign as jest.Mock).mockReturnValue(token);
 
-			await loginUser(req, res);
-
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
+			expect(bcrypt.compare).toHaveBeenCalledTimes(1);
 			expect(bcrypt.compare).toHaveBeenCalledWith(
-				password,
-				hashedPassword
+				mockRequest.body.password,
+				mockUser.password
 			);
+
+			expect(jwt.sign).toHaveBeenCalledTimes(1);
 			expect(jwt.sign).toHaveBeenCalledWith(
-				{ userId: 1 },
+				{ userId: mockUser.id },
 				env.jwtSecret,
 				{ expiresIn: "1h" }
 			);
-			expect(res.json).toHaveBeenCalledWith({ token });
+
+			expect(res.status).toHaveBeenCalledTimes(1);
+			expect(res.status).toHaveBeenCalledWith(200);
+			expect(res.json).toHaveBeenCalledTimes(1);
+			expect(res.json).toHaveBeenCalledWith({ token: mockToken });
 		});
 
-		it("should return an error if the user does not exist", async () => {
-			const username = "testuser";
-			const password = "testpassword";
+		it("should return an error for invalid credentials", async () => {
+			const mockRequest = {
+				body: {
+					login: "testuser",
+					password: "testpassword",
+				},
+			} as Request;
 
-			req.body = { username, password };
+			(User.findOne as jest.Mock) = jest.fn().mockResolvedValue(null);
 
-			(User.findOne as jest.Mock).mockResolvedValue(null);
+			await loginUser(mockRequest, res as Response);
 
-			await loginUser(req, res);
+			expect(User.findOne).toHaveBeenCalledTimes(1);
+			expect(User.findOne).toHaveBeenCalledWith({
+				where: {
+					[Op.or]: [
+						{ username: mockRequest.body.login },
+						{ email: mockRequest.body.login },
+					],
+				},
+			});
 
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
+			expect(res.status).toHaveBeenCalledTimes(1);
 			expect(res.status).toHaveBeenCalledWith(401);
+			expect(res.json).toHaveBeenCalledTimes(1);
 			expect(res.json).toHaveBeenCalledWith({
 				error: "Invalid credentials",
 			});
 		});
 
-		it("should return an error if the password is incorrect", async () => {
-			const username = "testuser";
-			const password = "testpassword";
-			const hashedPassword = "hashedpassword";
+		it("should handle internal server errors", async () => {
+			const mockRequest = {
+				body: {
+					login: "testuser",
+					password: "testpassword",
+				},
+			} as Request;
 
-			req.body = { username, password };
+			(User.findOne as jest.Mock) = jest
+				.fn()
+				.mockRejectedValue(new Error("Database error"));
 
-			(User.findOne as jest.Mock).mockResolvedValue({
-				id: 1,
-				password: hashedPassword,
-			});
-			(bcrypt.compare as jest.Mock).mockResolvedValue(false);
+			await loginUser(mockRequest, res as Response);
 
-			await loginUser(req, res);
+			expect(User.findOne).toHaveBeenCalledTimes(1);
 
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
-			expect(bcrypt.compare).toHaveBeenCalledWith(
-				password,
-				hashedPassword
-			);
-			expect(res.status).toHaveBeenCalledWith(401);
-			expect(res.json).toHaveBeenCalledWith({
-				error: "Invalid credentials",
-			});
-		});
-
-		it("should return an error if an exception occurs", async () => {
-			const username = "testuser";
-			const password = "testpassword";
-
-			req.body = { username, password };
-
-			(User.findOne as jest.Mock).mockRejectedValue(
-				new Error("Database error")
-			);
-
-			await loginUser(req, res);
-
-			expect(User.findOne).toHaveBeenCalledWith({ where: { username } });
+			expect(res.status).toHaveBeenCalledTimes(1);
 			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledTimes(1);
 			expect(res.json).toHaveBeenCalledWith({
 				error: "Internal Server Error",
 			});

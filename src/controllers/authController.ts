@@ -3,15 +3,23 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user";
 import env from "../config/env";
+import { Op } from "sequelize";
 
 export async function registerUser(req: Request, res: Response) {
 	try {
-		const { username, password } = req.body;
+		const { username, email, firstName, lastName, password } = req.body;
 
 		// Check if the username already exists
-		const existingUser = await User.findOne({ where: { username } });
+		const existingUser = await User.findOne({
+			where: {
+				[Op.or]: [{ username }, { email }],
+			},
+		});
+
 		if (existingUser) {
-			return res.status(400).json({ error: "Username already exists" });
+			return res
+				.status(400)
+				.json({ error: "Username or Email already exists" });
 		}
 
 		// Hash the password
@@ -20,6 +28,9 @@ export async function registerUser(req: Request, res: Response) {
 		// Create a new user record
 		const newUser = await User.create({
 			username,
+			email,
+			firstName,
+			lastName,
 			password: hashedPassword,
 		});
 
@@ -28,7 +39,7 @@ export async function registerUser(req: Request, res: Response) {
 			expiresIn: "1h",
 		});
 
-		res.json({ token });
+		res.status(200).json({ token });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });
@@ -37,10 +48,12 @@ export async function registerUser(req: Request, res: Response) {
 
 export async function loginUser(req: Request, res: Response) {
 	try {
-		const { username, password } = req.body;
+		const { login, password } = req.body;
 
 		// Find the user by username
-		const user = await User.findOne({ where: { username } });
+		const user = await User.findOne({
+			where: { [Op.or]: [{ username: login }, { email: login }] },
+		});
 		if (!user) {
 			return res.status(401).json({ error: "Invalid credentials" });
 		}
@@ -56,7 +69,7 @@ export async function loginUser(req: Request, res: Response) {
 			expiresIn: "1h",
 		});
 
-		res.json({ token });
+		res.status(200).json({ token });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });

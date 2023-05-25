@@ -4,7 +4,7 @@ import User from "../models/user";
 export async function getAllUsers(req: Request, res: Response) {
 	try {
 		const users = await User.findAll();
-		res.json(users);
+		res.status(200).json(users);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });
@@ -18,7 +18,7 @@ export async function getUserById(req: Request, res: Response) {
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
-		res.json(user);
+		res.status(200).json(user);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });
@@ -27,8 +27,14 @@ export async function getUserById(req: Request, res: Response) {
 
 export async function createUser(req: Request, res: Response) {
 	try {
-		const { username, password } = req.body;
-		const newUser = await User.create({ username, password });
+		const { username, email, firstName, lastName, password } = req.body;
+		const newUser = await User.create({
+			username,
+			email,
+			firstName,
+			lastName,
+			password,
+		});
 		res.status(201).json(newUser);
 	} catch (error) {
 		console.error(error);
@@ -50,7 +56,7 @@ export async function updateUser(req: Request, res: Response) {
 			return res.status(404).json({ error: "User not found" });
 		}
 
-		res.json(user);
+		res.status(200).json(user);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });

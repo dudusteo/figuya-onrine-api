@@ -4,6 +4,9 @@ import sequelize from "../config/database";
 interface UserAttributes {
 	id: number;
 	username: string;
+	email: string;
+	firstName: string;
+	lastName: string;
 	password: string;
 }
 
@@ -12,6 +15,9 @@ export interface UserInput extends Optional<UserAttributes, "id"> {}
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
 	public id!: number;
 	public username!: string;
+	public email!: string;
+	public firstName!: string;
+	public lastName!: string;
 	public password!: string;
 
 	public readonly createdAt!: Date;
@@ -26,6 +32,18 @@ User.init(
 			primaryKey: true,
 		},
 		username: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		email: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		firstName: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		lastName: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},

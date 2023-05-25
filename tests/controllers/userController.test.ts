@@ -36,8 +36,20 @@ describe("userController", () => {
 	describe("getAllUsers", () => {
 		it("should get all users", async () => {
 			const users = [
-				{ id: 1, username: "user1" },
-				{ id: 2, username: "user2" },
+				{
+					id: 1,
+					username: "user1",
+					email: "email1@email.com",
+					firstName: "firstName1",
+					lastName: "lastName1",
+				},
+				{
+					id: 2,
+					username: "user2",
+					email: "email2@email.com",
+					firstName: "firstName2",
+					lastName: "lastName2",
+				},
 			];
 
 			(User.findAll as jest.Mock).mockResolvedValue(users);
@@ -66,7 +78,13 @@ describe("userController", () => {
 	describe("getUserById", () => {
 		it("should get a user by ID", async () => {
 			const id = "1";
-			const user = { id: 1, username: "user1" };
+			const user = {
+				id: 1,
+				username: "user1",
+				email: "email1@email.com",
+				firstName: "firstName1",
+				lastName: "lastName1",
+			};
 
 			req.params = { id };
 
@@ -113,32 +131,57 @@ describe("userController", () => {
 	describe("createUser", () => {
 		it("should create a new user", async () => {
 			const username = "user1";
+			const email = "testemail@email.com";
+			const firstName = "testfirstname";
+			const lastName = "testlastname";
 			const password = "password1";
-			const newUser = { id: 1, username };
+			const newUser = {
+				id: 1,
+				username,
+				email,
+				firstName,
+				lastName,
+				password,
+			};
 
-			req.body = { username, password };
+			req.body = { username, email, firstName, lastName, password };
 
 			(User.create as jest.Mock).mockResolvedValue(newUser);
 
 			await createUser(req, res);
 
-			expect(User.create).toHaveBeenCalledWith({ username, password });
+			expect(User.create).toHaveBeenCalledWith({
+				username,
+				email,
+				firstName,
+				lastName,
+				password,
+			});
 			expect(res.status).toHaveBeenCalledWith(201);
 			expect(res.json).toHaveBeenCalledWith(newUser);
 		});
 
 		it("should handle errors and return an error response", async () => {
 			const username = "user1";
+			const email = "testemail@email.com";
+			const firstName = "testfirstname";
+			const lastName = "testlastname";
 			const password = "password1";
 			const error = new Error("Database error");
 
-			req.body = { username, password };
+			req.body = { username, email, firstName, lastName, password };
 
 			(User.create as jest.Mock).mockRejectedValue(error);
 
 			await createUser(req, res);
 
-			expect(User.create).toHaveBeenCalledWith({ username, password });
+			expect(User.create).toHaveBeenCalledWith({
+				username,
+				email,
+				firstName,
+				lastName,
+				password,
+			});
 			expect(res.status).toHaveBeenCalledWith(500);
 			expect(res.json).toHaveBeenCalledWith({
 				error: "Internal Server Error",
