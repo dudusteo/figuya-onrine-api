@@ -5,6 +5,7 @@ import env from "./config/env";
 import { authRoutes } from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
+import sequelize from "./config/database";
 
 const app = express();
 
@@ -23,9 +24,19 @@ app.get("/api", (req: Request, res: Response) => {
 });
 
 app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
+app.use("/user", userRoutes);
 
 app.use(errorMiddleware);
+
+// Sync the models with the database to create the tables
+sequelize
+	.sync({ force: true })
+	.then(() => {
+		console.log("Tables created successfully.");
+	})
+	.catch((error: Error) => {
+		console.error("Failed to create tables:", error);
+	});
 
 app.listen(env.port, () => {
 	console.log(`Server is up and running on ${env.port} ...`);

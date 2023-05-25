@@ -15,11 +15,11 @@ class Character
 	extends Model<CharacterAttributes, CharacterInput>
 	implements CharacterAttributes
 {
-	public id!: number;
-	public name!: string;
+	declare id: number;
+	declare name: string;
 
-	public readonly createdAt!: Date;
-	public readonly updatedAt!: Date;
+	declare readonly createdAt: Date;
+	declare readonly updatedAt: Date;
 }
 
 Character.init(

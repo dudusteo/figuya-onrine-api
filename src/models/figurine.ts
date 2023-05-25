@@ -17,13 +17,13 @@ class Figurine
 	extends Model<FigurineAttributes, FigurineInput>
 	implements FigurineAttributes
 {
-	public id!: number;
-	public name!: string;
-	public condition!: string;
-	public price!: number;
+	declare id: number;
+	declare name: string;
+	declare condition: string;
+	declare price: number;
 
-	public readonly createdAt!: Date;
-	public readonly updatedAt!: Date;
+	declare readonly createdAt: Date;
+	declare readonly updatedAt: Date;
 }
 
 Figurine.init(

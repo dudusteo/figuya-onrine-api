@@ -11,6 +11,23 @@ export async function getAllUsers(req: Request, res: Response) {
 	}
 }
 
+interface AuthenticatedRequest extends Request {
+	userId?: string;
+}
+
+export async function getCurrentUser(req: AuthenticatedRequest, res: Response) {
+	try {
+		const user = await User.findByPk(req.userId);
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.status(200).json(user);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}
+
 export async function getUserById(req: Request, res: Response) {
 	try {
 		const { id } = req.params;

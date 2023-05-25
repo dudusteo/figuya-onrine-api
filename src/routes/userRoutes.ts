@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	getAllUsers,
+	getCurrentUser,
 	getUserById,
 	createUser,
 	updateUser,
@@ -13,6 +14,7 @@ const router = express.Router();
 router.use(authMiddleware); // Apply authentication middleware to all routes below this line
 
 router.get("/", getAllUsers);
+router.get("/me", getCurrentUser);
 router.get("/:id", getUserById);
 router.post("/", createUser);
 router.put("/:id", updateUser);
