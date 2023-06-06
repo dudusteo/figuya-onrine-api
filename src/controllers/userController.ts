@@ -44,13 +44,15 @@ export async function getUserById(req: Request, res: Response) {
 
 export async function createUser(req: Request, res: Response) {
 	try {
-		const { username, email, firstName, lastName, password } = req.body;
+		const { username, email, firstName, lastName, password, role } =
+			req.body;
 		const newUser = await User.create({
 			username,
 			email,
 			firstName,
 			lastName,
 			password,
+			role,
 		});
 		res.status(201).json(newUser);
 	} catch (error) {

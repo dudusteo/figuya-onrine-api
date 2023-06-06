@@ -7,6 +7,7 @@ import { userRoutes } from "./routes/userRoutes";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import sequelize from "./config/database";
 import { figurineRoutes } from "./routes/figurineRoutes";
+import { adminRoutes } from "./routes/adminRoutes";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get("/api", (req: Request, res: Response) => {
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/figurine", figurineRoutes);
+app.use("/admin", adminRoutes);
 
 app.use(errorMiddleware);
 

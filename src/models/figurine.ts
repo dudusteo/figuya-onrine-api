@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../config/database";
+import Character from "./character";
 
 interface FigurineAttributes {
 	id: number;
@@ -51,5 +52,9 @@ Figurine.init(
 		sequelize,
 	}
 );
+
+Figurine.belongsTo(Character, {
+	foreignKey: "characterId",
+});
 
 export default Figurine;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import User, { UserRole } from "../models/user";
 import env from "../config/env";
 import { Op } from "sequelize";
 
@@ -32,6 +32,7 @@ export async function registerUser(req: Request, res: Response) {
 			firstName,
 			lastName,
 			password: hashedPassword,
+			role: UserRole.USER,
 		});
 
 		// Generate JWT token

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import env from "../config/env";
+import User, { UserRole } from "../models/user";
 
 interface JwtPayload {
 	userId: string;
@@ -29,3 +30,21 @@ export function authMiddleware(
 		return res.status(401).json({ error: "Invalid token" });
 	}
 }
+
+export const isAdmin = (
+	req: AuthenticatedRequest,
+	res: Response,
+	next: NextFunction
+) => {
+	User.findByPk(req.userId).then((user) => {
+		if (!user) {
+			throw new Error("User not found");
+		}
+
+		if (user.role === UserRole.ADMIN) {
+			next();
+		} else {
+			res.status(403).json({ error: "Unauthorized" });
+		}
+	});
+};
