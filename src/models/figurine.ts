@@ -8,6 +8,9 @@ interface FigurineAttributes {
 	condition: string;
 	price: number;
 
+	//external
+	characterId?: number;
+
 	createdAt?: Date;
 	updatedAt?: Date;
 }

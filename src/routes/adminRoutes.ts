@@ -8,6 +8,6 @@ const router = express.Router();
 router.use(authMiddleware);
 router.use(isAdmin);
 
-router.post("/figurine/", createFigurine);
+router.post("/figurine", createFigurine);
 
 export { router as adminRoutes };

@@ -34,7 +34,7 @@ app.use(errorMiddleware);
 
 // Sync the models with the database to create the tables
 sequelize
-	.sync({ force: true })
+	.sync()
 	.then(() => {
 		console.log("Tables created successfully.");
 	})
