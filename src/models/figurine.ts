@@ -1,6 +1,9 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../config/database";
 import Character from "./character";
+import Origin from "./origin";
+import Company from "./company";
+import Type from "./type";
 
 interface FigurineAttributes {
 	id: number;
@@ -10,6 +13,9 @@ interface FigurineAttributes {
 
 	//external
 	characterId?: number;
+	originId?: number;
+	companyId?: number;
+	typeId?: number;
 
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -58,6 +64,18 @@ Figurine.init(
 
 Figurine.belongsTo(Character, {
 	foreignKey: "characterId",
+});
+
+Figurine.belongsTo(Origin, {
+	foreignKey: "originId",
+});
+
+Figurine.belongsTo(Company, {
+	foreignKey: "companyId",
+});
+
+Figurine.belongsTo(Type, {
+	foreignKey: "typeId",
 });
 
 export default Figurine;

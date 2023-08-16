@@ -1,6 +1,9 @@
-const util = require("util");
-const multer = require("multer");
+import util from "util";
+import multer from "multer";
+
 const maxSize = 2 * 1024 * 1024;
+
+console.log(process.env.STATIC_DIR + "/static");
 
 let storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -18,4 +21,5 @@ let uploadFile = multer({
 }).array("images");
 
 let uploadFileMiddleware = util.promisify(uploadFile);
-module.exports = uploadFileMiddleware;
+
+export default { uploadFileMiddleware };
