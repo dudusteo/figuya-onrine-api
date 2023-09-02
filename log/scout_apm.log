@@ -1,0 +1,19 @@
+# Logfile created on 2023-09-02 15:19:34 +0200 by logger.rb/v1.5.3
+[09/02/23 15:19:34 +0200 intelpc (57421)] INFO : No configuration file loaded, and no configuration found in ENV. For assistance configuring Scout, visit https://docs.scoutapm.com/#ruby-configuration-options
+[09/02/23 15:19:34 +0200 intelpc (57421)] INFO : Scout Agent [5.3.5] Initialized
+[09/02/23 15:19:34 +0200 intelpc (57421)] INFO : Not Loading Instruments
+[09/02/23 15:19:34 +0200 intelpc (57421)] INFO : Scout Agent [5.3.5] Installed
+[09/02/23 15:19:34 +0200 intelpc (57421)] INFO : Monitoring isn't enabled for the [development] environment.
+[09/02/23 15:19:34 +0200 intelpc (57421)] INFO : Deferring agent start. Standing by for first request
+[09/02/23 15:19:38 +0200 intelpc (57762)] INFO : No configuration file loaded, and no configuration found in ENV. For assistance configuring Scout, visit https://docs.scoutapm.com/#ruby-configuration-options
+[09/02/23 15:19:38 +0200 intelpc (57762)] INFO : Scout Agent [5.3.5] Initialized
+[09/02/23 15:19:38 +0200 intelpc (57762)] INFO : Not Loading Instruments
+[09/02/23 15:19:38 +0200 intelpc (57762)] INFO : Scout Agent [5.3.5] Installed
+[09/02/23 15:19:38 +0200 intelpc (57762)] INFO : Monitoring isn't enabled for the [development] environment.
+[09/02/23 15:19:38 +0200 intelpc (57762)] INFO : Deferring agent start. Standing by for first request
+[09/02/23 15:20:00 +0200 intelpc (58026)] INFO : No configuration file loaded, and no configuration found in ENV. For assistance configuring Scout, visit https://docs.scoutapm.com/#ruby-configuration-options
+[09/02/23 15:20:00 +0200 intelpc (58026)] INFO : Scout Agent [5.3.5] Initialized
+[09/02/23 15:20:00 +0200 intelpc (58026)] INFO : Not Loading Instruments
+[09/02/23 15:20:00 +0200 intelpc (58026)] INFO : Scout Agent [5.3.5] Installed
+[09/02/23 15:20:00 +0200 intelpc (58026)] INFO : Monitoring isn't enabled for the [development] environment.
+[09/02/23 15:20:00 +0200 intelpc (58026)] INFO : Deferring agent start. Standing by for first request
