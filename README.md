@@ -1,245 +1,132 @@
-# Spree Starter
+<p align="center">
+  <a href="https://spreecommerce.org">
+    <img alt="Spree Commerce - Open Source e-commerce platform" src="https://github.com/spree/spree/assets/12614496/ff5372a4-e906-458e-83b6-7927ba0629c1">
+  </a>
+
+  <h1 align="center">Spree Commerce</h2>
+
+  <p align="center">
+    An open source eCommerce platform giving you full control and customizability.
+    <br />
+    Build any eCommerce solution that your business requires.
+    <br />
+    <br />
+    <a href="https://slack.spreecommerce.org">Slack</a>
+    ·
+    <a href="https://docs.spreecommerce.org">Documentation</a>
+    ·
+    <a href="https://spreecommerce.org">Website</a>
+    ·
+    <a href="https://github.com/spree/spree/milestones?direction=asc&sort=due_date&state=open">Roadmap</a>
+  </p>
+</p>
+
+<p align="center">
+  <a href="https://rubygems.org/gems/spree">
+    <img alt="Gem Total Downloads" src="https://img.shields.io/gem/dt/spree" />
+  </a>
+  <a href="https://slack.spreecommerce.org">
+    <img alt="Slack members" src="https://img.shields.io/badge/slack%20members-6.5K-blue" />
+  </a>
+</p>
+
+## Getting Started
+
+Visit the [Quickstart Guide](https://docs.spreecommerce.org/developer/getting-started) to set up Spree in 5 minutes.
+
+## Enterprise support
+
+[Contact us](https://spreecommerce.org/contact/) for enterprise support and custom development services. We offer:
+  * migrations and upgrades,
+  * delivering your Spree application,
+  * optimizing your Spree stack.
+
+## Features
+### Customizable and modular
+  * pick and choose parts you want to use
+  * customize everything else (storefront, order processing, API, etc)
+<img alt="Spree Commerce - Storefront customization" src="https://github.com/spree/spree/assets/12614496/1a000452-6716-4fab-90ca-a4c28fc138a7">
+
+### Composable and API-first
+  * connect with your existing ecosystem, build custom workflows with ease
+  * [Storefront and Admin API](https://docs.spreecommerce.org/api-reference)
+  * Webhooks
+<img alt="Spree Commerce - API   Integrations" src="https://github.com/spree/spree/assets/12614496/18e98e8e-15cd-4b74-8e58-80e5b3f281d8">
+
+### Cart and Checkout for any use case
+  * advanced cart functionality
+  * over 30 payment provider integrations out of the box
+  * API to integrate any other payment gateway
+  * robust discounts system
+  * store credits, gift cards
+<img alt="Spree Commerce - Cart   Checkout" src="https://github.com/spree/spree/assets/12614496/05399a8f-a57a-4907-a8ea-a4e58285a55d">
+<img alt="Spree Commerce - Payments   Refunds" src="https://github.com/spree/spree/assets/12614496/0911073c-a681-409e-810c-f7e8daa4daac">
+
+### [Global Commerce](https://spreecommerce.org/use-cases/international-sales-demo/) ready
+  * multi-currency
+  * multi-language
+  * full translation support for products, categories, and more
+  * different shipping methods / costs for different regions
+  * advanced tax calculation
+<img alt="Spree Commerce - Multi-region   Multi-store" src="https://github.com/spree/spree/assets/12614496/e9c2edce-b80c-47ad-817b-a00a4ba54495">
+<img alt="Spree Commerce - Multi-region" src="https://github.com/spree/spree/assets/12614496/f8678baf-4efa-4de7-b092-b01ef3a4d8ea">
+
+### Multi-Store ready
+  * host multiple brands / stores on a single Spree instance
+  * each with different branding, configuration, payment methods, shipping options, product catalogs etc
+<img alt="Spree Commerce - Multi-store" src="https://github.com/spree/spree/assets/12614496/cf651354-6180-4927-973f-c650b80ccdb0">
+
+### Responsive Admin Panel
+Manage and curate products, users, orders, returns, shipments & more
+<img alt="Spree Commerce - Inventory management" src="https://github.com/spree/spree/assets/12614496/cdc7af4d-41ba-44f2-9595-efc948865107">
+
+### Orders & Post-purchase management
+Manage orders, shipments, returns and refunds
+<img alt="Spree Commerce - Order   Return management" src="https://github.com/spree/spree/assets/12614496/b1dffa8c-24d4-4629-a026-02951b5a80d7">
+<img alt="Spree Commerce - Order Fulfillment" src="https://github.com/spree/spree/assets/12614496/2212ec6d-bfd0-4940-9aae-f0ceea0b4e4d">
+
+### Why developers love it
+* **Runs anywhere** - cloud, VPS, Docker, Kubernetes
+* **Battle Tested** - used by thousands of merchants around the globe in all categories since 2007!
+* **Extensions available** adding new features to Spree
+
+## What you can build with Spree
+Use Spree for any use case. Innovate beyond what's out there.
+
+### A headless eCommerce micro-service
+Capture orders and payments for whatever you're selling - physical or digital, products or services
+
+<img alt="Spree Commerce - Composable eCommerce" src="https://github.com/spree/spree/assets/12614496/2bca9fdf-5ae2-4433-83aa-431105906fc8">
+
+### A [Multi-vendor marketplace](https://spreecommerce.org/use-cases/multi-vendor-marketplace-demo/)
+Run your own marketplace with multiple suppliers, each with a dedicated supplier dashboard
+<img alt="Spree Commerce - Marketplace" src="https://github.com/spree/spree/assets/12614496/c4ddd118-df4c-464e-b1fe-d43862e5cf25">
 
-## Running the api
+### A high-ticket B2B eCommerce
+Start capturing 6+ figure orders from resellers with safe payments and a checkout process that fits your business model
+<img alt="Spree Commerce - B2B eCommerce" src="https://github.com/spree/spree/assets/12614496/e0a184f6-31ad-4f7f-b30b-6f8a501b6f63">
 
-https://dev-docs.spreecommerce.org/getting-started/installation
+### Wholesale eCommerce
+Run your wholesale operation the way your retail partners expect
+<img alt="Spree Commerce - Wholesale" src="https://github.com/spree/spree/assets/12614496/bac1e551-f629-47d6-a983-b385aa65b1bd">
 
-- Run bin/setup-docker in said directory
-- Wait for the commands to execute (it can take around 2-3 minutes)
-- Run bin/start-docker to run the webserver
-- use the rails commend in errors
-- bin/rails db:create
-- bin/rails db:migrate
-- rails db:seed
+### A SaaS eCommerce platform
+Launch a multi-tenant, multi-store platform for your customers, resellers, affiliates in any configuration, eg. B2B2B, B2B2C, B2B2E
 
-This a dockerized [Spree Commerce](https://spreecommerce.org) application template ready to for local development and deployment to cloud providers.
+<img alt="Spree Commerce - Multi-store" src="https://github.com/spree/spree/assets/12614496/cf651354-6180-4927-973f-c650b80ccdb0">
 
-## Deploy in the cloud
+## Community & Contributing
 
-### Using Heroku
+Spree is an open source project and we love contributions in any form - pull requests, issues, feature ideas!
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+Follow our [Contributing Guide](https://docs.spreecommerce.org/developer/contributing)
 
-### Using Render
+[Join our Slack](https://slack.spreecommerce.org) to meet other community members.
 
-<a href="https://render.com/deploy?repo=https://github.com/spree/spree_starter/tree/main">
-  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render" height=32>
-</a>
+## Contact
 
-Note that sample data does not automatically get loaded when deploying to Render with the default configuration. In order to add sample data, run the following commands in the web service shell:
-
-```shell
-bundle exec rails db:seed
-bundle exec rake spree_sample:load
-```
-
-#### Deploying to Render with Spree Legacy Frontend
-
-To deploy to render with the Spree Legacy Frontend, first follow the instructions in the [legacy frontend ReadMe](https://github.com/spree/spree_legacy_frontend#installation) on adding the appropriate gems to your gemfile, and update the web service build command to use `bin/render-build-legacy-frontend.sh`, like so:
-
-```yaml
-services:
-  - type: web
-    name: spree
-    env: ruby
-    buildCommand: "./bin/render-build-legacy-frontend.sh"
-```
-
-After that, you'll be ready to deploy to render.
-
-## Local Installation
-
-### Using Docker (Recommended)
-
-#### Install required tools and dependencies:
-
-- [Docker](https://www.docker.com/community-edition#/download)
-
-#### Run setup script
-
-```bash
-bin/setup-docker
-```
-
-#### (Optional) Import sample data such as products, categories, etc
-
-```bash
-docker compose run web rake spree_sample:load
-```
-
-#### After the setup is finished, launch the webserver with:
-
-```bash
-bin/start-docker
-```
-
-### Using Hybrid installation
-
-#### Install required tools and dependencies:
-
-- [Docker](https://www.docker.com/community-edition#/download)
-- Ruby 3.2.0
-- [libvips](https://www.libvips.org/install.html)
-
-#### Run setup script
-
-```bash
-bin/setup-hybrid
-```
-
-#### (Optional) Import sample data such as products, categories, etc
-
-```bash
-bundle exec rake spree_sample:load
-```
-
-#### After loading all docker dependencies launch local server with:
-
-```bash
-bin/start-hybrid
-```
-
-### Without Docker (not recommended for beginners)
-
-#### Install required tools and dependencies
-
-1. HomeBrew - https://brew.sh/
-2. Install required packages: GPG, PostgreSQL, Redis, ImageMagick, and VIPS
-
-   ```bash
-   brew install gpg postgresql redis imagemagick vips
-   createuser -P -d postgres
-   ```
-
-3. RVM - https://rvm.io/
-4. NVM - https://github.com/nvm-sh/nvm
-5. Ruby - `rvm install 3.2.0`
-6. Node - `nvm install`
-7. Yarn - `npm -g install yarn`
-
-#### Run setup script
-
-```bash
-bin/setup-no-docker
-```
-
-## Adding Storefront
-
-Spree is a [headless e-commerce platform](https://dev-docs.spreecommerce.org/getting-started/headless-commerce) which you can use with any storefront you like. We have pre-built integrations with:
-
-- [Next.js Commerce](https://dev-docs.spreecommerce.org/storefronts/next.js-commerce)
-- [Vue Storefront](https://dev-docs.spreecommerce.org/storefronts/vue-storefront)
-
-## Updating
-
-### Connect to the docker container
-
-```bash
-docker compose run web bash
-```
-
-### Run update commands
-
-```
-bundle update
-bin/rails spree:install:migrations
-bin/rails db:migrate
-```
-
-For additional instructions please visit [Spree Upgrade Guides](https://dev-docs.spreecommerce.org/upgrades)
-
-## Development
-
-### Launching rails console
-
-```bash
-docker compose run web rails c
-```
-
-### Launching bash console
-
-```bash
-docker compose run web bash
-```
-
-## Customization
-
-### Adding new gems
-
-Update `Gemfile` and run
-
-```bash
-bundle install
-docker compose build
-```
-
-You will need to restart the server if running:
-
-```bash
-docker compose restart
-```
-
-## Environment variables
-
-| variable            | description                                                                                                                 | default value |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| DEBUG_ASSETS        | Enables/disables [asset debugging in development](https://guides.rubyonrails.org/asset_pipeline.html#turning-debugging-off) | false         |
-| DB_POOL             | database connection pool                                                                                                    | 5             |
-| MEMCACHED_POOL_SIZE | memcache connection pool                                                                                                    | 5             |
-| SENDGRID_API_KEY    | API key to interface Sendgrid API                                                                                           |               |
-
-## Troubleshooting
-
-### libvips error
-
-If you are building the application using the latest code, you may encounter the following libvips error:
-
-```
-LoadError: Could not open library 'vips.so.42'
-```
-
-This error is usually an indication that you do not have libvips installed locally on your machine. Check that libvips is installed with `vips -v`, and if it is not installed, follow [installation instructions here](https://www.libvips.org/install.html).
-
-### disabled 'Add to Cart' button
-
-This issue is specific to running with [spree_legacy_frontend](https://github.com/spree/spree_legacy_frontend).
-
-If you notice that the 'Add to Cart' button is disabled on product pages, try the [troubleshooting instructions](https://github.com/spree/spree_legacy_frontend#disabled-add-to-cart-button-issue) found in the spree_legacy_frontend ReadMe.
-
-### uninitialized constant Spree::Preference (NameError)
-
-If upgrading your spree app to Rails 7, you may run into the following error:
-
-```shell
-/lib/spree/core/preferences/store.rb:96:in `should_persist?':
-uninitialized constant Spree::Preference (NameError)
-```
-
-To fix this error, you'll need to update your spree config initializer. In `config/initializers/spree.rb`, wrap the `Spree.config` block in a `Rails.application.config.after_initialize` block, like so:
-
-```ruby
-Rails.application.config.after_initialize do
-  Spree.config do |config|
-    # config settings initialized here
-  end
-end
-```
+[Contact us](https://spreecommerce.org/contact/) and let's go! 
 
 ## License
 
-Spree Starter (formerly Spark Starter Kit) is copyright © 2015-2021
-[Spark Solutions Sp. z o.o.][spark]. It is free software,
-and may be redistributed under the terms specified in the
-[LICENSE](LICENSE.md) file.
-
-## About Spark Solutions
-
-[![Spark Solutions](http://sparksolutions.co/wp-content/uploads/2015/01/logo-ss-tr-221x100.png)][spark]
-
-Spree Starter is maintained and funded by [Spark Solutions Sp. z o.o.](http://sparksolutions.co?utm_source=github)
-The names and logos are trademarks of Spark Solutions Sp. z o.o.
-
-We are passionate about open source software.
-We are [available for hire][spark].
-
-[spark]: http://sparksolutions.co?utm_source=github
+Spree is released under the [New BSD License](https://github.com/spree/spree/blob/main/license.md).
