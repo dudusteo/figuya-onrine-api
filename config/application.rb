@@ -6,6 +6,9 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load environment variables from .env file
+Dotenv::Railtie.load
+
 module SpreeStarter
   class Application < Rails::Application
 

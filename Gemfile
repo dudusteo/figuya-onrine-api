@@ -85,3 +85,6 @@ gem "spree_i18n"
 
 # only needed for MacOS and Ruby 3.0
 gem 'sassc', github: 'sass/sassc-ruby', branch: 'master'
+
+# Use dotenv to load environment variables from .env into ENV in development
+gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'

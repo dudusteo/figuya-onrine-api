@@ -101,8 +101,8 @@ GEM
     acts_as_list (1.2.1)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     auto_strip_attributes (2.6.0)
       activerecord (>= 4.0)
     autoprefixer-rails (10.4.16.0)
@@ -155,17 +155,16 @@ GEM
       devise (>= 2.1.0)
     doorkeeper (5.7.0)
       railties (>= 5)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     drb (2.2.1)
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
     execjs (2.9.1)
     ffaker (2.23.0)
-    ffi (1.17.0-aarch64-linux-gnu)
-    ffi (1.17.0-arm-linux-gnu)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86-linux-gnu)
-    ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     flag-icons-rails (3.4.6.1)
       sass-rails
@@ -226,6 +225,7 @@ GEM
     kaminari-i18n (0.5.0)
       kaminari
       rails
+    logger (1.6.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -238,7 +238,7 @@ GEM
     matrix (0.4.2)
     mini_magick (4.13.1)
     mini_mime (1.1.5)
-    minitest (5.23.1)
+    minitest (5.24.0)
     mission_control-jobs (0.2.1)
       importmap-rails
       rails (~> 7.1)
@@ -256,7 +256,7 @@ GEM
       i18n (>= 0.6.4, <= 2)
     msgpack (1.7.2)
     mutex_m (0.2.0)
-    net-imap (0.4.12)
+    net-imap (0.4.13)
       date
       net-protocol
     net-pop (0.1.2)
@@ -266,16 +266,6 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.3)
-    nokogiri (1.16.6-aarch64-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.6-arm-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.6-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.6-x86-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.6-x86_64-darwin)
-      racc (~> 1.4)
     nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
@@ -285,7 +275,7 @@ GEM
     popper_js (1.16.1)
     psych (5.1.2)
       stringio
-    public_suffix (5.0.5)
+    public_suffix (6.0.0)
     puma (6.4.2)
       nio4r (~> 2.0)
     raabro (1.4.0)
@@ -365,8 +355,9 @@ GEM
       sprockets-rails
       tilt
     select2-rails (4.0.13)
-    selenium-webdriver (4.21.1)
+    selenium-webdriver (4.22.0)
       base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -449,9 +440,9 @@ GEM
       state_machines-activerecord (~> 0.6)
       stringex
       validates_zipcode
-    spree_emails (4.8.2)
+    spree_emails (4.8.3)
       actionmailer
-      spree_core (>= 4.8.2)
+      spree_core (>= 4.8.3)
       sprockets (>= 4.0)
     spree_extension (0.1.0)
       activerecord (>= 4.2)
@@ -534,17 +525,13 @@ GEM
     zeitwerk (2.6.16)
 
 PLATFORMS
-  aarch64-linux
-  arm-linux
-  arm64-darwin
-  x86-linux
-  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
   bootsnap
   capybara
   debug
+  dotenv-rails (~> 2.1, >= 2.1.1)
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
