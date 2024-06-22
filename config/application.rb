@@ -7,7 +7,7 @@ require "rails/all"
 Bundler.require(*Rails.groups)
 
 # Load environment variables from .env file
-Dotenv::Railtie.load
+Dotenv::Railtie.load if defined?(Dotenv::Railtie)
 
 module SpreeStarter
   class Application < Rails::Application
