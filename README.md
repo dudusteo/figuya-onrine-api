@@ -1,4 +1,16 @@
+### Setup production development
+
+bin/setup
+
+### Setup key:
+
 RAILS_ENV=production EDITOR="nano" rails credentials:edit
+
+### Precompile images
+
+RAILS_ENV=production bin/rails assets:precompile
+
+### Start server
 
 rails s -d -e production
 
