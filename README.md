@@ -14,6 +14,12 @@ https://dev-docs.spreecommerce.org/getting-started/installation
 
 This a dockerized [Spree Commerce](https://spreecommerce.org) application template ready to for local development and deployment to cloud providers.
 
+## Setting up production
+
+RAILS_ENV=production EDITOR="nano" rails credentials:edit
+
+rails s -d -e production
+
 ## Deploy in the cloud
 
 ### Using Heroku
