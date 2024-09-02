@@ -11,7 +11,16 @@ This starter uses:
 
 You don't need to install any additional tools or libraries to start developing with Spree Starter. Everything is already set up for you.
 
+## Setting up production
+
+RAILS_ENV=production EDITOR="nano" rails credentials:edit
+
+rails s -d -e production
+
+## Deploy in the cloud
+
 ## Installation
+
 
 Make sure you have the following installed:
 * Docker with Docker Compose - [installation instructions](https://docs.docker.com/get-docker/)
