@@ -1,3 +1,19 @@
+## First time setup
+
+Run bin/setup-docker in said directory
+- Wait for the commands to execute (it can take around 2-3 minutes)
+- Run bin/start-docker to run the webserver
+- use the rails commend in errors
+- bin/rails db:create
+- bin/rails db:migrate
+- rails db:seed
+
+## Setting up production
+
+RAILS_ENV=production EDITOR="nano" rails credentials:edit
+
+rails s -d -e production
+
 # Spree Starter
 
 This is a starter kit for [Spree Commerce](https://spreecommerce.org) - the open-source e-commerce platform for Rails. It is a great starting point for any Rails developer to quickly build an e-commerce store.
@@ -10,12 +26,6 @@ This starter uses:
 * Solid Cache for excellent caching and performance
 
 You don't need to install any additional tools or libraries to start developing with Spree Starter. Everything is already set up for you.
-
-## Setting up production
-
-RAILS_ENV=production EDITOR="nano" rails credentials:edit
-
-rails s -d -e production
 
 ## Deploy in the cloud
 
