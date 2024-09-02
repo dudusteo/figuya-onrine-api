@@ -1,15 +1,3 @@
-## First time setup
-
-Run bin/setup-docker in said directory
-- Wait for the commands to execute (it can take around 2-3 minutes)
-- Run bin/start-docker to run the webserver
-- use the rails commend in errors
-- bin/rails db:create
-- bin/rails db:migrate
-- rails db:seed
-
-## Setting up production
-
 RAILS_ENV=production EDITOR="nano" rails credentials:edit
 
 rails s -d -e production
@@ -27,10 +15,7 @@ This starter uses:
 
 You don't need to install any additional tools or libraries to start developing with Spree Starter. Everything is already set up for you.
 
-## Deploy in the cloud
-
 ## Installation
-
 
 Make sure you have the following installed:
 * Docker with Docker Compose - [installation instructions](https://docs.docker.com/get-docker/)
@@ -95,4 +80,5 @@ If you encounter an error like the following:
 LoadError: Could not open library 'vips.so.42'
 ```
 
+Please check that libvips is installed with `vips -v`, and if it is not installed, follow [installation instructions here](https://www.libvips.org/install.html).
 Please check that libvips is installed with `vips -v`, and if it is not installed, follow [installation instructions here](https://www.libvips.org/install.html).
