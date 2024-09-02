@@ -1,105 +1,93 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-ruby '3.2.0'
+ruby File.read('.ruby-version').strip.to_s
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7'
-# Use postgresql as the database for Active Record
-gem 'pg'
-# Use SCSS for stylesheets
-gem 'sass-rails'
-# Use Uglifier as compressor for JavaScript assets
-# gem 'uglifier'
-gem 'terser'
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 7.1.3", ">= 7.1.3.4"
 
-gem 'bootsnap', require: false
+# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+gem "sprockets-rails"
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+# Use pg as the database for Active Record
+gem "pg", "~> 1.1"
 
-# Use Puma as the app server
-gem 'puma'
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", ">= 5.0"
 
-gem 'awesome_print'
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem "importmap-rails"
+
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "jbuilder"
+
+# Use Redis adapter to run Action Cable in production
+gem "redis", ">= 4.0.1", group: :production
+
+# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+# gem "kredis"
+
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
+
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
-
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-
-  gem 'listen'
-
-  gem 'rspec_junit_formatter'
-
-  # monitoring
-  gem 'bullet'
-  gem 'rack-mini-profiler', require: false
-  gem 'flamegraph'
-  gem 'stackprof'
-  gem 'memory_profiler'
-
-  gem 'webmock'
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri windows ]
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 4.0'
+  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "web-console"
 
-  gem 'letter_opener'
+  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
+  # gem "rack-mini-profiler"
+
+  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem "spring"
 end
 
 group :test do
-  gem 'vcr'
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
 end
 
-# Heroku fix
-group :production do
-  gem 'rack-timeout'
-  gem 'font_assets'
-end
+# Use Solid Queue for background jobs
+gem "solid_queue", ">= 0.3.2"
+gem "mission_control-jobs"
 
-# file uploades & assets
-gem 'aws-sdk-s3', require: false
-
-# caching
-gem 'dalli' # memcache
-gem 'rack-cache' # http caching
-
-# sidekiq
-gem 'sidekiq'
+# Use Solid Cache for caching
+gem "solid_cache"
 
 # Spree gems
-gem 'spree', '~> 4.6'
-gem 'spree_sample', '~> 4.6'
-gem 'spree_emails', '~> 4.6'
-gem 'spree_backend', '~> 4.6'
-gem 'spree_gateway', '~> 3.10'
-gem 'spree_auth_devise', '~> 4.5'
-gem 'spree_i18n', '~> 5.1'
-gem 'spree_dev_tools', require: false, group: %w[test development]
+gem "spree"
+gem "spree_emails"
+gem "spree_sample"
+gem "spree_backend"
+gem "spree_frontend"
+gem "spree_auth_devise"
+gem "spree_gateway"
+gem "spree_i18n"
 
-# Sentry Client
-gem 'sentry-raven'
+# only needed for MacOS and Ruby 3.0
+gem 'sassc', github: 'sass/sassc-ruby', branch: 'master'
 
-# Scout Client
-gem 'scout_apm'
+# Use dotenv to load environment variables from .env into ENV in development
+gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
 
 # Rack CORS Middleware
 gem 'rack-cors'
-
-# SendGrid
-gem 'sendgrid-actionmailer'
-
-# logging
-gem 'remote_syslog_logger'
-
-gem 'activerecord-nulldb-adapter'
-
-# improved JSON rendering performance
-gem 'oj'
-
-# Fix SCSS errors with Ruby 3 on MacOS
-gem 'sassc', github: 'sass/sassc-ruby', group: :development
-
-gem "importmap-rails", "~> 2.0"
