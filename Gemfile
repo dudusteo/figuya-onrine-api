@@ -87,7 +87,7 @@ gem "spree_i18n"
 gem 'sassc', github: 'sass/sassc-ruby', branch: 'master'
 
 # Use dotenv to load environment variables from .env into ENV in development
-gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
+gem 'dotenv-rails', '~> 3.1'
 
 # Rack CORS Middleware
 gem 'rack-cors'
